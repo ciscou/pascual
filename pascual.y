@@ -6,6 +6,8 @@
   int get_var(char);
 
   int vars[26];
+
+  int cond = 1;
 %}
 
 %union {
@@ -13,43 +15,50 @@
   char sym;
 }
 
+%token IF
+%token FI
+%token WRITELN
 %token<sym> VAR
 %token ASSIGN
 %token<num> NUM
 
-%type<num> expression
-%type<num> factor
-%type<num> term
-
 %%
 
 lines:
-| lines line '\n'
+| lines line
 ;
 
 line:
-| VAR ASSIGN expression { set_var($1, $3); printf("%d\n", $3) }
-| expression { printf("%d\n", $1) }
+  '\n'
+| IF cond '\n' lines FI '\n' {           } // OOOOPS lines has already been executed
+                                           // TODO: keep an stack of vars so you can editer drop or merge???
+| VAR ASSIGN expression '\n' { printf("store %c\n", $1) }
+| WRITELN '(' expression ')' '\n' { printf("writeln\n") }
+| expression '\n'            { }
 ;
 
 expression:
   factor
-| expression '+' factor { $$ = $1 + $3 }
-| expression '-' factor { $$ = $1 - $3 }
+| expression '+' factor { printf("+\n") }
+| expression '-' factor { printf("-\n") }
 ;
 
 factor:
   term
-| factor '*' term { $$ = $1 * $3 }
-| factor '/' term { $$ = $1 / $3 }
+| factor '*' term { printf("*\n") }
+| factor '/' term { printf("/\n") }
 ;
 
 term:
-  NUM { $$ = $1 }
-| VAR { $$ = get_var($1) }
-| '(' expression ')' { $$ = $2 }
-| '+' term { $$ = $2 }
-| '-' term { $$ = -$2 }
+  NUM                { printf("%d\n", $1) }
+| VAR                { printf("load %c\n", $1) }
+| '(' expression ')' {}
+| '+' term           {}
+| '-' term           { printf("-1\n"); printf("*\n") }
+;
+
+cond:
+  expression '=' expression { printf("eq\n") }
 ;
 
 %%

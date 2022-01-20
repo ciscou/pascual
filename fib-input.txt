@@ -24,3 +24,4 @@ w <- u + v
 x <- v + w
 y <- w + x
 z <- x + y
+writeln(z)
