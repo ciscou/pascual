@@ -1,0 +1,10 @@
+if(x < 2)
+  if(x = 0)
+    writeln(1)
+  else
+    writeln(2)
+  fi
+else
+  writeln(3)
+fi
+

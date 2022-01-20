@@ -2,12 +2,10 @@
   int yylex();
   void yyerror(char *);
 
-  void set_var(char, int);
-  int get_var(char);
+  int current_instruction = 0;
 
-  int vars[26];
-
-  int cond = 1;
+  void generate_code(char *);
+  void next_instruction();
 %}
 
 %union {
@@ -26,46 +24,45 @@
 %%
 
 lines:
-| lines line
+| lines line '\n'
 ;
 
 line:
-  '\n'
-| IF cond '\n' lines FI '\n' {           } // TODO: generate code for if (must remember which instructions to jump
-| IF cond '\n' lines ELSE '\n' lines FI '\n' {           } // TODO: generate code for if (must remember which instructions to jump
-| VAR ASSIGN expression '\n' { printf("store %c\n", $1) }
-| WRITELN '(' expression ')' '\n' { printf("writeln\n") }
-| expression '\n'            { }
+| IF '(' cond ')' '\n' { printf("IF %d\n", current_instruction) } lines ELSE '\n' { printf("ELSE %d\n", current_instruction) } lines FI { printf("FI %d\n", current_instruction) }
+| VAR ASSIGN expression { printf("store %c\n", $1); next_instruction() }
+| WRITELN '(' expression ')' { generate_code("writeln") }
+| expression            { }
 ;
 
 expression:
   factor
-| expression '+' factor { printf("+\n") }
-| expression '-' factor { printf("-\n") }
+| expression '+' factor { generate_code("+") }
+| expression '-' factor { generate_code("-") }
 ;
 
 factor:
   term
-| factor '*' term { printf("*\n") }
-| factor '/' term { printf("/\n") }
+| factor '*' term { generate_code("*") }
+| factor '/' term { generate_code("/") }
 ;
 
 term:
-  NUM                { printf("%d\n", $1) }
-| VAR                { printf("load %c\n", $1) }
+  NUM                { printf("%d\n", $1); next_instruction() }
+| VAR                { printf("load %c\n", $1); next_instruction() }
 | '(' expression ')' {}
 | '+' term           {}
-| '-' term           { printf("-1\n"); printf("*\n") }
+| '-' term           { generate_code("-1"); generate_code("*") }
 ;
 
 cond:
-  expression '=' expression { printf("eq\n") }
+  expression '=' expression { generate_code("eq") }
+| expression '<' expression { generate_code("lt") }
+| expression '>' expression { generate_code("gt") }
 ;
 
 %%
 
 int main() {
-  for(int i=0; i<26; i++) vars[i] = 0;
   yyparse();
   return 0;
 }
@@ -74,10 +71,11 @@ void yyerror(char* s) {
   printf("Error %s\n", s);
 }
 
-void set_var(char var, int val) {
-  vars[var - 'a'] = val;
+void generate_code(char *code) {
+  printf("%s\n", code);
+  next_instruction();
 }
 
-int get_var(char var) {
-  return vars[var - 'a'];
+void next_instruction() {
+  current_instruction++;
 }

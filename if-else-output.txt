@@ -1,0 +1,18 @@
+load x
+2
+lt
+IF 3
+load x
+0
+eq
+IF 6
+1
+writeln
+ELSE 8
+2
+writeln
+FI 10
+ELSE 10
+3
+writeln
+FI 12
