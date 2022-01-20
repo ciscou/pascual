@@ -1,4 +1,5 @@
-a.out
+pascual
 lex.yy.c
-parser.tab.c
-parser.tab.h
+pascual.tab.c
+pascual.tab.h
+pascual.output
