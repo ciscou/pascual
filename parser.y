@@ -17,30 +17,39 @@
 %token ASSIGN
 %token<num> NUM
 
-%left '+' '-'
-%left '*' '/'
-
-%type<num> exp
+%type<num> expression
+%type<num> factor
+%type<num> term
 
 %%
 
-input:
-| input line '\n'
+lines:
+| lines line '\n'
 ;
 
 line:
-| VAR ASSIGN exp { set_var($1, $3); printf("%d\n", $3) }
-| exp { printf("%d\n", $1) }
+| VAR ASSIGN expression { set_var($1, $3); printf("%d\n", $3) }
+| expression { printf("%d\n", $1) }
 ;
 
-exp:
+expression:
+  factor
+| expression '+' factor { $$ = $1 + $3 }
+| expression '-' factor { $$ = $1 - $3 }
+;
+
+factor:
+  term
+| factor '*' term { $$ = $1 * $3 }
+| factor '/' term { $$ = $1 / $3 }
+;
+
+term:
   NUM { $$ = $1 }
 | VAR { $$ = get_var($1) }
-| exp '+' exp { $$ = $1 + $3 }
-| exp '-' exp { $$ = $1 - $3 }
-| exp '*' exp { $$ = $1 * $3 }
-| exp '/' exp { $$ = $1 / $3 }
-| '(' exp ')' { $$ = $2 }
+| '(' expression ')' { $$ = $2 }
+| '+' term { $$ = $2 }
+| '-' term { $$ = -$2 }
 ;
 
 %%
