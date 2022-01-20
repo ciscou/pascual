@@ -5,6 +5,7 @@
 %%
 
 "if"             { return IF; }
+"else"           { return ELSE; }
 "fi"             { return FI; }
 "writeln"        { return WRITELN; }
 [a-z]            { yylval.sym = yytext[0]; return VAR; }

@@ -16,6 +16,7 @@
 }
 
 %token IF
+%token ELSE
 %token FI
 %token WRITELN
 %token<sym> VAR
@@ -30,8 +31,8 @@ lines:
 
 line:
   '\n'
-| IF cond '\n' lines FI '\n' {           } // OOOOPS lines has already been executed
-                                           // TODO: keep an stack of vars so you can editer drop or merge???
+| IF cond '\n' lines FI '\n' {           } // TODO: generate code for if (must remember which instructions to jump
+| IF cond '\n' lines ELSE '\n' lines FI '\n' {           } // TODO: generate code for if (must remember which instructions to jump
 | VAR ASSIGN expression '\n' { printf("store %c\n", $1) }
 | WRITELN '(' expression ')' '\n' { printf("writeln\n") }
 | expression '\n'            { }
