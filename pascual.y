@@ -20,7 +20,7 @@
 %token END
 %token WRITELN
 %token READLN
-%token<sym> VAR
+%token<sym> ID
 %token ASSIGN
 %token<num> NUM
 
@@ -56,35 +56,62 @@ line:
     // back patch jz instruction
     sprintf(code[$1 % MOD], "jz %d", code_idx)
   }
-| VAR ASSIGN expression { sprintf(code[code_idx++], "store %c", $1) }
-| WRITELN '(' expression ')' { sprintf(code[code_idx++], "writeln") }
+| ID ASSIGN expression {
+    sprintf(code[code_idx++], "store %c", $1)
+  }
+| WRITELN '(' expression ')' {
+    sprintf(code[code_idx++], "writeln")
+  }
 ;
 
 expression:
   factor
-| expression '+' factor { sprintf(code[code_idx++], "+") }
-| expression '-' factor { sprintf(code[code_idx++], "-") }
+| expression '+' factor {
+    sprintf(code[code_idx++], "+")
+  }
+| expression '-' factor {
+    sprintf(code[code_idx++], "-")
+  }
 ;
 
 factor:
   term
-| factor '*' term { sprintf(code[code_idx++], "*") }
-| factor '/' term { sprintf(code[code_idx++], "/") }
+| factor '*' term {
+    sprintf(code[code_idx++], "*")
+  }
+| factor '/' term {
+    sprintf(code[code_idx++], "/")
+  }
 ;
 
 term:
-  NUM                { sprintf(code[code_idx++], "%d", $1) }
-| VAR                { sprintf(code[code_idx++], "load %c", $1) }
-| '(' expression ')' {}
-| '+' term           {}
-| '-' term           { sprintf(code[code_idx++], "-1"); sprintf(code[code_idx++], "*") }
-| READLN '(' ')'     { sprintf(code[code_idx++], "readln") }
+  NUM {
+    sprintf(code[code_idx++], "%d", $1)
+  }
+| ID {
+    sprintf(code[code_idx++], "load %c", $1)
+  }
+| '(' expression ')'
+| '+' term
+| '-' term {
+    sprintf(code[code_idx++], "-1");
+    sprintf(code[code_idx++], "*")
+  }
+| READLN '(' ')' {
+    sprintf(code[code_idx++], "readln")
+  }
 ;
 
 cond:
-  expression '=' expression { sprintf(code[code_idx++], "eq") }
-| expression '<' expression { sprintf(code[code_idx++], "lt") }
-| expression '>' expression { sprintf(code[code_idx++], "gt") }
+  expression '=' expression {
+    sprintf(code[code_idx++], "eq")
+  }
+| expression '<' expression {
+    sprintf(code[code_idx++], "lt")
+  }
+| expression '>' expression {
+    sprintf(code[code_idx++], "gt")
+  }
 ;
 
 %%
