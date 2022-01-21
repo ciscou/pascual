@@ -7,6 +7,8 @@
 "if"             { return IF; }
 "else"           { return ELSE; }
 "fi"             { return FI; }
+"while"          { return WHILE; }
+"end"            { return END; }
 "writeln"        { return WRITELN; }
 [a-z]            { yylval.sym = yytext[0]; return VAR; }
 "<-"             { return ASSIGN; }

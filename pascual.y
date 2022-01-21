@@ -14,6 +14,8 @@
 %token<num> IF
 %token ELSE
 %token FI
+%token<num> WHILE
+%token END
 %token WRITELN
 %token<sym> VAR
 %token ASSIGN
@@ -27,6 +29,7 @@ lines:
 
 line:
 | IF '(' cond ')' '\n' { $1 = code_idx++ } lines ELSE '\n' { sprintf(code[$1], "jz %d", code_idx+1); $1 = code_idx++ } lines FI { sprintf(code[$1], "jmp %d", code_idx) }
+| WHILE { $1 = 10000 * code_idx } '(' cond ')' '\n' { $1 += code_idx++ } lines END { sprintf(code[$1 % 10000], "jz %d", code_idx+1); sprintf(code[code_idx++], "jmp %d", $1 / 10000) }
 | VAR ASSIGN expression { sprintf(code[code_idx++], "store %c", $1) }
 | WRITELN '(' expression ')' { sprintf(code[code_idx++], "writeln") }
 | expression            { }
