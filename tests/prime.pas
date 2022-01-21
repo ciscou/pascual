@@ -19,4 +19,4 @@ begin
   if p = 1 then writeln(n) else begin end;
 
   n := n + 1
-end;
+end

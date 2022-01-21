@@ -7,7 +7,7 @@ store c
 load c
 0
 gt
-jz 23
+jz 25
 load a
 store d
 load a
@@ -20,6 +20,6 @@ load c
 1
 -
 store c
-jmp 6
 load a
 writeln
+jmp 6
