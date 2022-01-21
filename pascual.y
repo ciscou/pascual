@@ -1,5 +1,5 @@
 %{
-  #define MOD 65536 // Lazy man's way to store two numbers in a 32 bits integer
+  #define MODULO 65536 // Lazy man's way to store two numbers in a 32 bits integer
 
   int yylex();
   void yyerror(char *);
@@ -27,6 +27,8 @@
 %token READLN
 %token<sym> ID
 %token ASSIGN
+%token DIV
+%token MOD
 %token<num> NUM
 
 %left AND
@@ -47,24 +49,24 @@ line:
     $1 = code_idx++
   } line ELSE {
     // reserve space for jmp instruction
-    $1 += MOD * code_idx++;
+    $1 += MODULO * code_idx++;
     // back patch jz instruction
-    sprintf(code[$1 % MOD], "jz %d", code_idx)
+    sprintf(code[$1 % MODULO], "jz %d", code_idx)
   } line {
     // back patch jmp instruction
-    sprintf(code[$1 / MOD], "jmp %d", code_idx)
+    sprintf(code[$1 / MODULO], "jmp %d", code_idx)
   }
 | WHILE {
     // save address of jmp instruction
-    $1 = MOD * code_idx
+    $1 = MODULO * code_idx
   } cond DO {
     // reserve space for jz instruction
     $1 += code_idx++
   } line {
     // jump back to re-evaluate condition
-    sprintf(code[code_idx++], "jmp %d", $1 / MOD);
+    sprintf(code[code_idx++], "jmp %d", $1 / MODULO);
     // back patch jz instruction
-    sprintf(code[$1 % MOD], "jz %d", code_idx)
+    sprintf(code[$1 % MODULO], "jz %d", code_idx)
   }
 | ID ASSIGN expression {
     sprintf(code[code_idx++], "store %c", $1)
@@ -91,6 +93,12 @@ factor:
   }
 | factor '/' term {
     sprintf(code[code_idx++], "/")
+  }
+| factor DIV term {
+    sprintf(code[code_idx++], "div")
+  }
+| factor MOD term {
+    sprintf(code[code_idx++], "mod")
   }
 ;
 

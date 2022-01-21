@@ -30,7 +30,15 @@ while idx < code.length
   when "/"
     b = stack.pop
     a = stack.pop
+    stack.push(a.fdiv b)
+  when "div"
+    b = stack.pop
+    a = stack.pop
     stack.push(a / b)
+  when "mod"
+    b = stack.pop
+    a = stack.pop
+    stack.push(a % b)
   when "and"
     b = stack.pop
     a = stack.pop

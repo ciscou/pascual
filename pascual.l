@@ -30,5 +30,7 @@
 "="              { return '='; }
 "<"              { return '<'; }
 ">"              { return '>'; }
+"div"            { return DIV; }
+"mod"            { return MOD; }
 
 %%
