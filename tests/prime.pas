@@ -1,5 +1,5 @@
 m := 100;
-n := 0;
+n := 2;
 
 while not n > m do
 begin

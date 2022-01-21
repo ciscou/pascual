@@ -1,6 +1,6 @@
 100
 store m
-0
+2
 store n
 load n
 load m
