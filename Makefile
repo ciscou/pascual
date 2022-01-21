@@ -9,7 +9,7 @@ lex.yy.c: pascual.l pascual.tab.h
 pascual: lex.yy.c pascual.tab.c pascual.tab.h
 	gcc -o pascual pascual.tab.c lex.yy.c -ll
 
-test:
+test: pascual
 	cd tests ; for i in *.pas ; do basename=$$(basename $$i .pas) ; ../pascual < $$basename.pas > $$basename.asm ; ruby ../pascual.rb < $$basename.asm > $$basename.txt ; done
 
 clean:
