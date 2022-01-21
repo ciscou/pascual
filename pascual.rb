@@ -13,7 +13,7 @@ while idx < code.length
   s = code[idx]
 
   case s
-  when /^([0-9]+)$/
+  when /^(\-?[0-9]+)$/
     stack.push $1.to_i
   when "+"
     b = stack.pop
