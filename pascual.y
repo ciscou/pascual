@@ -27,12 +27,12 @@
 %%
 
 lines:
-| line
+  line
 | lines ';' line
 ;
 
 line:
-  IF '(' cond ')' {
+| IF '(' cond ')' {
     // reserve space for jz instruction
     $1 = code_idx++
   } lines ELSE {
