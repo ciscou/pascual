@@ -6,7 +6,7 @@ if(x < 2)
   fi
 else
   writeln(3)
-fi
+fi;
 if(x = 0)
   if(y = 0)
     if(z = 0)

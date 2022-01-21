@@ -27,12 +27,35 @@
 %%
 
 lines:
-| lines line '\n'
+| line
+| lines ';' line
 ;
 
 line:
-| IF '(' cond ')' '\n' { $1 = code_idx++ } lines ELSE '\n' { $1 += MOD * code_idx++; sprintf(code[$1 % MOD], "jz %d", code_idx) } lines FI { sprintf(code[$1 / MOD], "jmp %d", code_idx) }
-| WHILE { $1 = MOD * code_idx } '(' cond ')' '\n' { $1 += code_idx++ } lines END { sprintf(code[code_idx++], "jmp %d", $1 / MOD); sprintf(code[$1 % MOD], "jz %d", code_idx) }
+  IF '(' cond ')' {
+    // reserve space for jz instruction
+    $1 = code_idx++
+  } lines ELSE {
+    // reserve space for jmp instruction
+    $1 += MOD * code_idx++;
+    // back patch jz instruction
+    sprintf(code[$1 % MOD], "jz %d", code_idx)
+  } lines FI {
+    // back patch jmp instruction
+    sprintf(code[$1 / MOD], "jmp %d", code_idx)
+  }
+| WHILE {
+    // save address of jmp instruction
+    $1 = MOD * code_idx
+  } '(' cond ')' {
+    // reserve space for jz instruction
+    $1 += code_idx++
+  } lines END {
+    // jump back to re-evaluate condition
+    sprintf(code[code_idx++], "jmp %d", $1 / MOD);
+    // back patch jz instruction
+    sprintf(code[$1 % MOD], "jz %d", code_idx)
+  }
 | VAR ASSIGN expression { sprintf(code[code_idx++], "store %c", $1) }
 | WRITELN '(' expression ')' { sprintf(code[code_idx++], "writeln") }
 ;

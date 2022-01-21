@@ -1,9 +1,9 @@
-a <- 1
-b <- 10
+a <- 1;
+b <- 10;
 
 while(b > 0)
-  a <- a * b
+  a <- a * b;
   b <- b - 1
-end
+end;
 
 writeln(a)
