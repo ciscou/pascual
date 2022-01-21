@@ -4,9 +4,8 @@ store m
 store n
 load n
 load m
-gt
-not
-jz 50
+lte
+jz 48
 1
 store p
 2
@@ -18,31 +17,30 @@ load i
 load n
 2
 /
-gt
-not
+lte
 and
-jz 38
+jz 36
 load n
 load i
 mod
 0
 eq
-jz 33
+jz 31
 0
 store p
-jmp 33
+jmp 31
 load i
 1
 +
 store i
-jmp 13
+jmp 12
 load p
 1
 eq
-jz 45
+jz 43
 load n
 writeln
-jmp 45
+jmp 43
 load n
 1
 +

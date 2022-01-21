@@ -1,7 +1,7 @@
 m := 100;
 n := 1;
 
-while not n > m do
+while n <= m do
 begin
   if n mod 15 = 0 then
     writeln(-15)

@@ -62,6 +62,18 @@ while idx < code.length
     b = stack.pop
     a = stack.pop
     stack.push(a == b ? 1 : 0)
+  when "lte"
+    b = stack.pop
+    a = stack.pop
+    stack.push(a <= b ? 1 : 0)
+  when "gte"
+    b = stack.pop
+    a = stack.pop
+    stack.push(a >= b ? 1 : 0)
+  when "neq"
+    b = stack.pop
+    a = stack.pop
+    stack.push(a != b ? 1 : 0)
   when /^load (\w+)$/
     stack.push(vars[$1])
   when /^store (\w+)$/

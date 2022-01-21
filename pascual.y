@@ -21,6 +21,9 @@
 %token AND
 %token OR
 %token NOT
+%token LTE
+%token GTE
+%token NEQ
 %token TK_BEGIN
 %token END
 %token WRITELN
@@ -139,6 +142,15 @@ cond:
   }
 | expression '>' expression {
     sprintf(code[code_idx++], "gt")
+  }
+| expression LTE expression {
+    sprintf(code[code_idx++], "lte")
+  }
+| expression GTE expression {
+    sprintf(code[code_idx++], "gte")
+  }
+| expression NEQ expression {
+    sprintf(code[code_idx++], "neq")
   }
 ;
 

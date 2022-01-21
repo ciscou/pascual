@@ -30,6 +30,9 @@
 "="              { return '='; }
 "<"              { return '<'; }
 ">"              { return '>'; }
+"<="             { return LTE; }
+">="             { return GTE; }
+"<>"             { return NEQ; }
 "div"            { return DIV; }
 "mod"            { return MOD; }
 

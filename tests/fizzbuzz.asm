@@ -4,42 +4,41 @@ store m
 store n
 load n
 load m
-gt
-not
-jz 49
+lte
+jz 48
 load n
 15
 mod
 0
 eq
-jz 20
+jz 19
 15
 -1
 *
 writeln
-jmp 44
+jmp 43
 load n
 3
 mod
 0
 eq
-jz 31
+jz 30
 3
 -1
 *
 writeln
-jmp 44
+jmp 43
 load n
 5
 mod
 0
 eq
-jz 42
+jz 41
 5
 -1
 *
 writeln
-jmp 44
+jmp 43
 load n
 writeln
 load n
