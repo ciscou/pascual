@@ -14,9 +14,11 @@
 }
 
 %token<num> IF
+%token THEN
 %token ELSE
-%token FI
 %token<num> WHILE
+%token DO
+%token TK_BEGIN
 %token END
 %token WRITELN
 %token READLN
@@ -32,25 +34,26 @@ lines:
 ;
 
 line:
-| IF '(' cond ')' {
+| TK_BEGIN lines END
+| IF cond THEN {
     // reserve space for jz instruction
     $1 = code_idx++
-  } lines ELSE {
+  } line ELSE {
     // reserve space for jmp instruction
     $1 += MOD * code_idx++;
     // back patch jz instruction
     sprintf(code[$1 % MOD], "jz %d", code_idx)
-  } lines FI {
+  } line {
     // back patch jmp instruction
     sprintf(code[$1 / MOD], "jmp %d", code_idx)
   }
 | WHILE {
     // save address of jmp instruction
     $1 = MOD * code_idx
-  } '(' cond ')' {
+  } cond DO {
     // reserve space for jz instruction
     $1 += code_idx++
-  } lines END {
+  } line {
     // jump back to re-evaluate condition
     sprintf(code[code_idx++], "jmp %d", $1 / MOD);
     // back patch jz instruction

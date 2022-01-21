@@ -1,19 +1,18 @@
-if(x < 2)
-  if(x = 0)
+if x < 2 then begin
+  if x = 0 then
     writeln(1)
   else
     writeln(2)
-  fi
+  end
 else
-  writeln(3)
-fi;
-if(x = 0)
-  if(y = 0)
-    if(z = 0)
+  writeln(3);
+if x = 0 then
+  if y = 0 then
+    if z = 0 then
       writeln(42)
     else
-    fi
+    begin end
   else
-  fi
+  begin end
 else
-fi
+begin end

@@ -5,9 +5,11 @@
 %%
 
 "if"             { return IF; }
+"then"           { return THEN; }
 "else"           { return ELSE; }
-"fi"             { return FI; }
 "while"          { return WHILE; }
+"do"             { return DO; }
+"begin"          { return TK_BEGIN; }
 "end"            { return END; }
 "writeln"        { return WRITELN; }
 "readln"         { return READLN; }
