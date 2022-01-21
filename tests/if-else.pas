@@ -8,13 +8,7 @@ else begin
   writeln(3)
 end;
 
-if x = 0 then
-  if y = 0 then
-    if z = 0 then
-      writeln(42)
-    else
-    begin end
-  else
-  begin end
+if x = 0 and y = 0 and not (z > 0) then
+  writeln(42)
 else
 begin end

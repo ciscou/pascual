@@ -17,17 +17,16 @@ writeln
 load x
 0
 eq
-jz 33
 load y
 0
 eq
-jz 32
+and
 load z
 0
-eq
-jz 31
+gt
+not
+and
+jz 32
 42
 writeln
-jmp 31
 jmp 32
-jmp 33

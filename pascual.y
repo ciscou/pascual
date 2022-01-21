@@ -18,6 +18,9 @@
 %token ELSE
 %token<num> WHILE
 %token DO
+%token AND
+%token OR
+%token NOT
 %token TK_BEGIN
 %token END
 %token WRITELN
@@ -25,6 +28,10 @@
 %token<sym> ID
 %token ASSIGN
 %token<num> NUM
+
+%left AND
+%left OR
+%left NOT
 
 %%
 
@@ -106,7 +113,17 @@ term:
 ;
 
 cond:
-  expression '=' expression {
+  '(' cond ')'
+| cond OR cond {
+    sprintf(code[code_idx++], "or")
+  }
+| cond AND cond {
+    sprintf(code[code_idx++], "and")
+  }
+| NOT cond {
+    sprintf(code[code_idx++], "not")
+  }
+| expression '=' expression {
     sprintf(code[code_idx++], "eq")
   }
 | expression '<' expression {

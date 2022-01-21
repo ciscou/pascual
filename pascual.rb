@@ -31,6 +31,17 @@ while idx < code.length
     b = stack.pop
     a = stack.pop
     stack.push(a / b)
+  when "and"
+    b = stack.pop
+    a = stack.pop
+    stack.push(a != 0 && b != 0 ? 1 : 0)
+  when "or"
+    b = stack.pop
+    a = stack.pop
+    stack.push(a != 0 || b != 0 ? 1 : 0)
+  when "not"
+    a = stack.pop
+    stack.push(a != 0 ? 0 : 1)
   when "lt"
     b = stack.pop
     a = stack.pop
