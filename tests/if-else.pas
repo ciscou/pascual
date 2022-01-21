@@ -4,8 +4,10 @@ if x < 2 then begin
   else
     writeln(2)
   end
-else
-  writeln(3);
+else begin
+  writeln(3)
+end;
+
 if x = 0 then
   if y = 0 then
     if z = 0 then
