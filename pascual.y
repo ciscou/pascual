@@ -1,4 +1,6 @@
 %{
+  #define MOD 65536 // Lazy man's way to store two numbers in a 32 bits integer
+
   int yylex();
   void yyerror(char *);
 
@@ -28,8 +30,8 @@ lines:
 ;
 
 line:
-| IF '(' cond ')' '\n' { $1 = code_idx++ } lines ELSE '\n' { sprintf(code[$1], "jz %d", code_idx+1); $1 = code_idx++ } lines FI { sprintf(code[$1], "jmp %d", code_idx) }
-| WHILE { $1 = 10000 * code_idx } '(' cond ')' '\n' { $1 += code_idx++ } lines END { sprintf(code[$1 % 10000], "jz %d", code_idx+1); sprintf(code[code_idx++], "jmp %d", $1 / 10000) }
+| IF '(' cond ')' '\n' { $1 = code_idx++ } lines ELSE '\n' { $1 += MOD * code_idx++; sprintf(code[$1 % MOD], "jz %d", code_idx) } lines FI { sprintf(code[$1 / MOD], "jmp %d", code_idx) }
+| WHILE { $1 = MOD * code_idx } '(' cond ')' '\n' { $1 += code_idx++ } lines END { sprintf(code[code_idx++], "jmp %d", $1 / MOD); sprintf(code[$1 % MOD], "jz %d", code_idx) }
 | VAR ASSIGN expression { sprintf(code[code_idx++], "store %c", $1) }
 | WRITELN '(' expression ')' { sprintf(code[code_idx++], "writeln") }
 | expression            { }
