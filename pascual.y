@@ -35,7 +35,6 @@ line:
 | WHILE { $1 = MOD * code_idx } '(' cond ')' '\n' { $1 += code_idx++ } lines END { sprintf(code[code_idx++], "jmp %d", $1 / MOD); sprintf(code[$1 % MOD], "jz %d", code_idx) }
 | VAR ASSIGN expression { sprintf(code[code_idx++], "store %c", $1) }
 | WRITELN '(' expression ')' { sprintf(code[code_idx++], "writeln") }
-| expression            { }
 ;
 
 expression:
