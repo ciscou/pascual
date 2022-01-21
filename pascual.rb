@@ -55,6 +55,8 @@ while idx < code.length
     idx = $1.to_i - 1
   when "writeln"
     puts stack.pop
+  when "readln"
+    stack.push(STDIN.gets.to_i)
   else
     raise "unexpected instruction #{s.inspect}"
   end

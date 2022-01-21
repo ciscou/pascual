@@ -10,6 +10,7 @@
 "while"          { return WHILE; }
 "end"            { return END; }
 "writeln"        { return WRITELN; }
+"readln"         { return READLN; }
 [a-z]            { yylval.sym = yytext[0]; return VAR; }
 "<-"             { return ASSIGN; }
 [0-9]+           { yylval.num = atoi(yytext); return NUM; }

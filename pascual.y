@@ -19,6 +19,7 @@
 %token<num> WHILE
 %token END
 %token WRITELN
+%token READLN
 %token<sym> VAR
 %token ASSIGN
 %token<num> NUM
@@ -55,6 +56,7 @@ term:
 | '(' expression ')' {}
 | '+' term           {}
 | '-' term           { sprintf(code[code_idx++], "-1"); sprintf(code[code_idx++], "*") }
+| READLN '(' ')'     { sprintf(code[code_idx++], "readln") }
 ;
 
 cond:
