@@ -10,7 +10,7 @@ pascual: lex.yy.c pascual.tab.c pascual.tab.h
 	gcc -o pascual pascual.tab.c lex.yy.c -ll
 
 test:
-	cd tests ; for i in fib prec if-else fact prime fizzbuzz reverse pi ; do ../pascual < $$i.pas > $$i.asm ; ruby ../pascual.rb < $$i.asm > $$i.txt ; done
+	cd tests ; for i in *.pas ; do basename=$$(basename $$i .pas) ; ../pascual < $$basename.pas > $$basename.asm ; ruby ../pascual.rb < $$basename.asm > $$basename.txt ; done
 
 clean:
-	rm -rf pascual pascual.tab.c lex.yy.c pascual.tab.h pascual.output
+	rm -rf pascual pascual.tab.c lex.yy.c pascual.tab.h pascual.output tests/*.asm tests/*.txt
