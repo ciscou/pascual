@@ -10,7 +10,7 @@
 
 %union {
   int num;
-  char sym;
+  char* id;
 }
 
 %token<num> IF
@@ -28,7 +28,7 @@
 %token END
 %token WRITELN
 %token READLN
-%token<sym> ID
+%token<id> ID
 %token ASSIGN
 %token DIV
 %token MOD
@@ -47,32 +47,32 @@ lines:
 
 line:
 | TK_BEGIN lines END
-| IF cond THEN {
+| IF cond {
     // reserve space for jz instruction
     $1 = code_idx++
-  } line ELSE {
+  } THEN line {
     // reserve space for jmp instruction
     $1 += MODULO * code_idx++;
     // back patch jz instruction
     sprintf(code[$1 % MODULO], "jz %d", code_idx)
-  } line {
+  } ELSE line {
     // back patch jmp instruction
     sprintf(code[$1 / MODULO], "jmp %d", code_idx)
   }
 | WHILE {
     // save address of jmp instruction
     $1 = MODULO * code_idx
-  } cond DO {
+  } cond {
     // reserve space for jz instruction
     $1 += code_idx++
-  } line {
+  } DO line {
     // jump back to re-evaluate condition
     sprintf(code[code_idx++], "jmp %d", $1 / MODULO);
     // back patch jz instruction
     sprintf(code[$1 % MODULO], "jz %d", code_idx)
   }
 | ID ASSIGN expression {
-    sprintf(code[code_idx++], "store %c", $1)
+    sprintf(code[code_idx++], "store %s", $1)
   }
 | WRITELN '(' expression ')' {
     sprintf(code[code_idx++], "writeln")
@@ -110,7 +110,7 @@ term:
     sprintf(code[code_idx++], "%d", $1)
   }
 | ID {
-    sprintf(code[code_idx++], "load %c", $1)
+    sprintf(code[code_idx++], "load %s", $1)
   }
 | '(' expression ')'
 | '+' term

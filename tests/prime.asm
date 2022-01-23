@@ -1,48 +1,48 @@
 100
-store m
+store max
 2
-store n
-load n
-load m
+store num
+load num
+load max
 lte
 jz 48
 1
-store p
+store is_prime
 2
-store i
-load p
+store divisor
+load is_prime
 1
 eq
-load i
-load n
+load divisor
+load num
 2
 /
 lte
 and
 jz 36
-load n
-load i
+load num
+load divisor
 mod
 0
 eq
 jz 31
 0
-store p
+store is_prime
 jmp 31
-load i
+load divisor
 1
 +
-store i
+store divisor
 jmp 12
-load p
+load is_prime
 1
 eq
 jz 43
-load n
+load num
 writeln
 jmp 43
-load n
+load num
 1
 +
-store n
+store num
 jmp 4

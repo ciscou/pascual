@@ -1,22 +1,22 @@
-m := 100;
-n := 2;
+max := 100;
+num := 2;
 
-while n <= m do
+while num <= max do
 begin
-  p := 1;
-  i := 2;
+  is_prime := 1;
+  divisor := 2;
 
-  while p = 1 and i <= n / 2 do
+  while is_prime = 1 and divisor <= num / 2 do
   begin
-    if n mod i = 0 then
-      p := 0
+    if num mod divisor = 0 then
+      is_prime := 0
     else
     begin end;
 
-    i := i + 1
+    divisor := divisor + 1
   end;
 
-  if p = 1 then writeln(n) else begin end;
+  if is_prime = 1 then writeln(num) else begin end;
 
-  n := n + 1
+  num := num + 1
 end
