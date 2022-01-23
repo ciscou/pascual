@@ -78,6 +78,16 @@ while idx < code.length
     stack.push(vars[$1])
   when /^store (\w+)$/
     vars[$1] = stack.pop
+  when /^mkarray (\w+)$/
+    a = stack.pop
+    vars[$1] = Array.new(a, 0)
+  when /^loadarr (\w+)$/
+    a = stack.pop
+    stack.push(vars[$1][a])
+  when /^storearr (\w+)$/
+    b = stack.pop
+    a = stack.pop
+    vars[$1][a] = b
   when /^jz (\w+)$/
     idx = $1.to_i - 1 if stack.pop == 0
   when /^jnz (\w+)$/

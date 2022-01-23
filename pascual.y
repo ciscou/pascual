@@ -28,6 +28,7 @@
 %token END
 %token WRITELN
 %token READLN
+%token ARRAY
 %token<id> ID
 %token ASSIGN
 %token DIV
@@ -73,6 +74,12 @@ line:
   }
 | ID ASSIGN expression {
     sprintf(code[code_idx++], "store %s", $1)
+  }
+| ID ASSIGN ARRAY '(' expression ')' {
+    sprintf(code[code_idx++], "mkarray %s", $1)
+  }
+| ID '[' expression ']' ASSIGN expression {
+    sprintf(code[code_idx++], "storearr %s", $1)
   }
 | WRITELN '(' expression ')' {
     sprintf(code[code_idx++], "writeln")
@@ -120,6 +127,9 @@ term:
   }
 | READLN '(' ')' {
     sprintf(code[code_idx++], "readln")
+  }
+| ID '[' expression ']' {
+    sprintf(code[code_idx++], "loadarr %s", $1)
   }
 ;
 

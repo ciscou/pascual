@@ -17,6 +17,7 @@
 "not"            { return NOT; }
 "writeln"        { return WRITELN; }
 "readln"         { return READLN; }
+"array"          { return ARRAY; }
 ":="             { return ASSIGN; }
 [0-9]+           { yylval.num = atoi(yytext); return NUM; }
 ";"              { return ';'; }
@@ -26,6 +27,8 @@
 "/"              { return '/'; }
 "("              { return '('; }
 ")"              { return ')'; }
+"["              { return '['; }
+"]"              { return ']'; }
 "="              { return '='; }
 "<"              { return '<'; }
 ">"              { return '>'; }
