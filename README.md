@@ -1,5 +1,5 @@
 # pascual
-toy compiler for a pascal-like language
+toy compiler for a pascal-like language (in bison + flex)
 
 ## building
 just `make` it. You'll need flex, bison, and a C compiler.
